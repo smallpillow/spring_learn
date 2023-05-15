@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd" >
+
+    <!--  加载properties文件  -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!--  mybatis  -->
+    <!--  数据源  -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <!--  将SqlSessionFactory存到容器  -->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.sun.mapper"/>
+    </bean>
+
+
+    <bean id="userDao" class="com.sun.dao.impl.UserDaoImpl">
+        <property name="userService" ref="userService"/>
+    </bean>
+    <bean id="userService" class="com.sun.service.impl.UserServiceImpl">
+        <property name="userDao" ref="userDao"/>
+        <property name="userMapper" ref="userMapper"/>
+    </bean>
+
+    <!--    -->
+<!--    <bean id="userDao" class="com.sun.dao.impl.UserDaoImpl" init-method="init"/>-->
+<!--    <bean class="com.sun.processor.TimeLogBeanPostProcessor"/>-->
+
+<!--    <bean id="userService" class="com.sun.service.impl.UserServiceImpl" init-method="init" destroy-method="destroy">-->
+<!--        <property name="userDao" ref="userDao" />-->
+<!--    </bean>-->
+    <!--  使用静态工厂创建  -->
+<!--    <bean id="userDaoFromStaticFactory" class="com.sun.factory.MyStaticBeanFactory" factory-method="userDao"/>-->
+
+<!--    <bean id="userDaoFactory" class="com.sun.factory.MyBeanFactory">-->
+<!--        <property name="name" value="sun"/>-->
+<!--    </bean>-->
+<!--    <bean id="userDaoFromFactory" factory-bean="userDaoFactory" factory-method="userDao"/>-->
+<!--    <bean id="userDaoFromBeanFactory" class="com.sun.factory.MyBeanFactoryWithBean"/>-->
+
+<!--    <bean class="com.sun.processor.MyBeanFactoryPostProcessor"/>-->
+<!--    <bean class="com.sun.processor.MyBeanPostProcessor"/>-->
+
+</beans>
