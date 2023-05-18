@@ -82,3 +82,6 @@
   - MapperFactoryBean：Mapper的FactoryBean，获取Mapper时候调用getObject
   -  
 
+
+- 基于Xml以及注解方式进行Bean注册
+![img.png](img.png)
